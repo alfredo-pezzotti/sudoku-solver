@@ -7,7 +7,7 @@
 """
 
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk as ttk
 
 
 # definitions:
@@ -42,7 +42,7 @@ for r in range (11):
         elif ((c == 3) or (c == 7)) and ((r != 3) and (r != 7)):
             tk.Label(topFrame, text="|", borderwidth=2).grid(row=r, column=c)
         else:
-            tk.Label(topFrame, text='-', borderwidth=1).grid(row=r, column=c)
+            ttk.Separator(topFrame, orient="horizontal").grid(row=r, column=c)
 
 # create solve button:
 solveBtn = tk.Button(bottomFrame, text="solve!")
