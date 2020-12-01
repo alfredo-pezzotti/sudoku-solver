@@ -9,6 +9,7 @@
 import tkinter as tk
 from tkinter import ttk as ttk
 import collections
+import subprocess as subp
 
 
 # create a global dictionary to reach the elements of the grid
@@ -50,10 +51,12 @@ def SolvePuzzle():
             else:
                 dataString = dataString + temp
             col += 1
-         # end of row:
-         row += 1
-     # end of cycle
-     
+        # end of row:
+        row += 1
+    
+    # spawn the sudoku-solver process passing dataString as argument 
+    # with option -d (--direct-input)
+
 
 # create a root window
 root = tk.Tk()
