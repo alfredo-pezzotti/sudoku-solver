@@ -60,6 +60,8 @@ def SolvePuzzle():
 
 # create a root window
 root = tk.Tk()
+root.wm_title("sudoku-solver")
+root.call('wm', 'iconphoto', root._w, tk.PhotoImage(file='res/sudoku.png'))
 #root.geometry("400x400")
 frame = tk.Frame(root)
 #frame.config(bg="#FFFFFF")
