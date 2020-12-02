@@ -11,6 +11,7 @@ from tkinter import ttk as ttk
 from tkinter.messagebox import showerror
 import collections
 import subprocess as subp
+import sys
 
 
 # create a global dictionary to reach the elements of the grid
@@ -25,6 +26,26 @@ dataString = ""
 def Open():
     # define code here
     pass
+
+# fx to call the executable's subprocess:
+def SpawnSolver():
+    global dataString
+    if (sys.platform == "linux") or (sys.platform == "linux2"):
+        procOut = subp.run(["./sudoku-solver", "-d", dataString], capture_output=True )
+    #elif platform == "darwin":
+    #    # OS X
+    elif sys.platform == "win32":
+        procOut = subp.run(["sudoku-solver.exe", "-d", dataString], capture_output=True) 
+    # assign output to dataString
+    dataString = procOut.stdout
+
+    return procOut.returncode
+
+# sets the puzzle grid with the correct results
+def PrintResult():
+    global dataString
+    global sudokuElements
+    return
 
 # called whenever the "Solve" button is clicked:
 def SolvePuzzle():
@@ -47,7 +68,10 @@ def SolvePuzzle():
                                    (temp != '9')):
                 # raise a dialog informing of $temp problem at
                 # (r,c) position 
-                errorMessage = showerror(title="Invalid puzzle", message="Looks like you entered something funny\nin grid element (" + str(row + 1) + ", " + str(col + 1) + "):\n" + temp)
+                errorMessage = showerror(title="Invalid puzzle", 
+                                       message="Looks like you entered something funny" + 
+                                         " in grid element (" + str(row + 1) + 
+                                         ", " + str(col + 1) + "):\n" + temp)
                 return
             elif (temp == ''):
                 dataString = dataString + '.'   # append vacancy
@@ -57,10 +81,27 @@ def SolvePuzzle():
         # end of row:
         row += 1
     
-    # spawn the sudoku-solver process passing dataString as argument 
+    # spawn the sudoku-solver process passing dataString as argument
     # with option -d (--direct-input)
+    returnCode = SpawnSolver()
+    # the puzzle was successfully solved
+    if returnCode == 0:
+        PrintResult()
+    # the puzzle has not been solved:
+    elif returnCode == 1:
+        errorMessage = showerror( title="Non-solvable puzzle",
+                                  message="The algorithm did not manage to find a" +
+                                  " solution for the submitted puzzle. It's pretty" +
+                                  " smart so you better check input for errors.")
+    
+        return
+    
+    # end of fx
+    return
+    
 
-
+    
+""" MAIN """
 # create a root window
 root = tk.Tk()
 root.wm_title("sudoku-solver")
@@ -96,7 +137,6 @@ for r in range (11):
         if (c != 3) and (c != 7) and (r != 3) and (r != 7):
             # TODO: create the widget first, and only after that call .grid(), coz
             # Widget.grid() returns a None type.
-            #sudokuElements[row].append( tk.Entry(topFrame, width=3).grid(row=r, column=c) )
             temp = tk.Entry(topFrame, width=2)
             sudokuElements[row].append(temp)
             (sudokuElements[row][column]).grid(row=r, column=c)
