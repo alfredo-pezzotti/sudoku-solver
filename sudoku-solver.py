@@ -8,6 +8,7 @@
 
 import tkinter as tk
 from tkinter import ttk as ttk
+from tkinter.messagebox import showerror
 import collections
 import subprocess as subp
 
@@ -28,6 +29,7 @@ def Open():
 # called whenever the "Solve" button is clicked:
 def SolvePuzzle():
     global dataString
+    global sudokuElements
     row = 0
     for r in range (9):
         col = 0
@@ -45,7 +47,8 @@ def SolvePuzzle():
                                    (temp != '9')):
                 # raise a dialog informing of $temp problem at
                 # (r,c) position 
-                pass
+                errorMessage = showerror(title="Invalid puzzle", message="Looks like you entered something funny\nin grid element (" + str(row + 1) + ", " + str(col + 1) + "):\n" + temp)
+                return
             elif (temp == ''):
                 dataString = dataString + '.'   # append vacancy
             else:
