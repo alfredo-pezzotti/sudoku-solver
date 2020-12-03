@@ -45,6 +45,12 @@ def SpawnSolver():
 def PrintResult():
     global dataString
     global sudokuElements
+    
+    for r in range (9):
+        for c in range (9):
+            #(sudokuElements[r][c]).delete(0)
+            (sudokuElements[r][c]).insert(0, dataString[(r*9) + c])
+
     return
 
 # called whenever the "Solve" button is clicked:
