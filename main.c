@@ -11,6 +11,7 @@
 #include <string.h> // strcat(), strcpy()
 #include "sudoku.h"
 #include "engine.h"
+#include "main.h"
 
 
 
@@ -29,8 +30,11 @@ int main (int argc, char *argv[])   // list of arguments starts from argv[1]
     //DEBUG!
     //long inFileSize;
     char arrGrid[9][9];
-
     
+    // init mode variables:
+    helpMode    = false;
+    directInput = false;
+    printTable  = false;
     // get current working directory
     pinFilePath  =  inFilePath;
     poutFilePath = outFilePath;
@@ -74,21 +78,10 @@ int main (int argc, char *argv[])   // list of arguments starts from argv[1]
     // read the input file and populate the grid:
     PopulateMatrix(fpin, arrGrid);
     
-    //DEBUG!
-/*  {
-        int u=0, v=0;
-        
-        for (v=0; v<9; v++)
-        {
-            for (u=0; u<9; u++)
-            {
-                printf("%c ",  SudokuMatrix[v][u]);
-            }
-            printf("\n");
-        }
-        printf("\n");
-    }
-    PrintGrid(arrGrid);
+    
+/*
+    //DEBUG
+    //!PrintGrid(arrGrid);
 */
    
     // solve the puzzle:

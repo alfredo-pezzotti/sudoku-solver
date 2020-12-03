@@ -61,8 +61,8 @@ int PopulateMatrix (FILE *fpin, char arrGrid[9][9])
             {
                 // assign the input element's value to the correct 
                 // grid element:
-                i = rowCounter;//    % 3;
-                j = columnCounter;// % 3;
+                i = rowCounter;
+                j = columnCounter;
                 arrGrid[i][j] = line[rowCursor];
 
                 columnCounter++;
