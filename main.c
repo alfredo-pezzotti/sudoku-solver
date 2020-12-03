@@ -35,6 +35,26 @@ int main (int argc, char *argv[])   // list of arguments starts from argv[1]
     helpMode    = false;
     directInput = false;
     printTable  = false;
+
+    // check input mode:
+    if (argc != 1)
+    {
+        // arguments are present:
+        // TODO NOPE! replace with strcmp()
+        switch (argv[1])
+        {
+            case "-h":
+                helpMode = true;
+                break;
+            case "-d":
+                directInput = true;
+                break;
+            case "-p":
+                printTable = true;
+                break;
+        }
+    }
+
     // get current working directory
     pinFilePath  =  inFilePath;
     poutFilePath = outFilePath;
@@ -58,12 +78,12 @@ int main (int argc, char *argv[])   // list of arguments starts from argv[1]
     if (fpin == NULL)
     {
         printf("ERROR: cannot open input file in %s\n", inFilePath);
-        return 1;
+        return 2;
     }
     if (fpout == NULL)
     {
         printf("ERROR: cannot create output file in %s\n", outFilePath);
-        return 1;
+        return 2;
     }
     
 /*
@@ -88,7 +108,7 @@ int main (int argc, char *argv[])   // list of arguments starts from argv[1]
     if(!SolveSudoku(arrGrid))
     {
         printf("Dude, this puzzle can't be solved, wtf did you throw at me?\n");
-        return 0;
+        return 1;
     }
 
     // print out the solved puzzle: 
