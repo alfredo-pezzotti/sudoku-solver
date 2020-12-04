@@ -13,9 +13,98 @@
 #include "engine.h"
 #include "main.h"
 
-
+int MinimalSolve();
+int DirectSolve(char *inputString);
 
 int main (int argc, char *argv[])   // list of arguments starts from argv[1]
+{ 
+    // init mode variables:
+    helpMode    = false;
+    directInput = false;
+    printTable  = false;
+    minimalMode = false;
+
+    // check input mode:
+    if (argc != 1)
+    {
+        // arguments are present:
+        if ( !strcmp(argv[1], "-h") )
+        {
+            helpMode = true;
+        }
+        else if ( !strcmp(argv[1], "-d") )
+        {
+            directInput = true;
+        }
+        else if ( !strcmp(argv[1], "-p") )
+        {
+            printTable = true;
+        }
+        else
+        {
+            helpMode = true;
+        }
+    }
+    else
+    {
+        minimalMode = true;
+    }
+    
+    // starts minimal mode, in which the board.txt file is read,
+    // arrGrid is populated and output is written to solved.txt
+    if (minimalMode)
+    {
+        return MinimalSolve();
+    }
+    // searches for an input string from the GUI, formatted by 
+    // concatenating all rows of the matrix from first to last
+    else if (directInput)
+    {
+        return DirectSolve(argv[2]);
+    }
+    
+   
+    return 0;
+}
+
+
+int DirectSolve(char *inputString)
+{
+    int row, col;
+    char dataString[81];
+    char arrGrid[9][9];
+    
+    // populate the working grid parsing the input:
+    for (row=0; row<9; row++)
+    {
+        for (col=0; col<9; col++)
+        {
+            arrGrid[row][col] = inputString[ (row*9) + col ];
+        }
+    }
+
+    // solve the grid:
+    if(!SolveSudoku(arrGrid))
+    {
+        return 1;   // puzzle is not solvable
+    }
+    // assign output values to output buffer:
+    for (row=0; row<9; row++)
+    {
+        for (col=0; col<9; col++)
+        {
+            dataString[ (row*9) + col ] = arrGrid[row][col];
+        }
+    }
+
+    // print result on the stdout so that the GUI can read it:
+    printf("%s", dataString);
+
+
+    return 0;
+}
+
+int MinimalSolve()
 {
     FILE *fpin, *fpout;
     
@@ -30,30 +119,6 @@ int main (int argc, char *argv[])   // list of arguments starts from argv[1]
     //DEBUG!
     //long inFileSize;
     char arrGrid[9][9];
-    
-    // init mode variables:
-    helpMode    = false;
-    directInput = false;
-    printTable  = false;
-
-    // check input mode:
-    if (argc != 1)
-    {
-        // arguments are present:
-        // TODO NOPE! replace with strcmp()
-        switch (argv[1])
-        {
-            case "-h":
-                helpMode = true;
-                break;
-            case "-d":
-                directInput = true;
-                break;
-            case "-p":
-                printTable = true;
-                break;
-        }
-    }
 
     // get current working directory
     pinFilePath  =  inFilePath;
@@ -97,13 +162,6 @@ int main (int argc, char *argv[])   // list of arguments starts from argv[1]
 
     // read the input file and populate the grid:
     PopulateMatrix(fpin, arrGrid);
-    
-    
-/*
-    //DEBUG
-    //!PrintGrid(arrGrid);
-*/
-   
     // solve the puzzle:
     if(!SolveSudoku(arrGrid))
     {
@@ -116,22 +174,13 @@ int main (int argc, char *argv[])   // list of arguments starts from argv[1]
     rewind(fpout);
     PrintOutMatrix(fpin, fpout, arrGrid);
 
-/*
-    //DEBUG!
-    PrintGrid(arrGrid);
-*/
-
     // close the file streams:
     rewind(fpin);
     rewind(fpout);
     fclose(fpin);
     fclose(fpout);
 
-
     return 0;
 }
 
-
-
 //EOF
-

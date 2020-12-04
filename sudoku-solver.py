@@ -48,8 +48,8 @@ def PrintResult():
     
     for r in range (9):
         for c in range (9):
-            #(sudokuElements[r][c]).delete(0)
-            (sudokuElements[r][c]).insert(0, dataString[(r*9) + c])
+            (sudokuElements[r][c]).delete(0)
+            (sudokuElements[r][c]).insert(0, chr(dataString[(r*9) + c]))
 
     return
 
@@ -80,7 +80,7 @@ def SolvePuzzle():
                                          ", " + str(col + 1) + "):\n" + temp)
                 return
             elif (temp == ''):
-                dataString = dataString + '.'   # append vacancy
+                dataString = str(dataString) + "."   # append vacancy
             else:
                 dataString = dataString + temp
             col += 1

@@ -6,5 +6,6 @@
 bool helpMode;
 bool directInput;
 bool printTable;
+bool minimalMode;
 
 #endif
