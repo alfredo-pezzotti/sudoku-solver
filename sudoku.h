@@ -10,11 +10,11 @@
 #define byte unsigned char
 
 // if the OS is windows, paths are separated by backslashes
-#ifdef _WIN32
+#ifndef __linux__
 static const char spacer = '\\';
 #endif
 
-#ifdef linux
+#ifdef __linux__
 static const char spacer = '/';
 #endif
 
