@@ -23,11 +23,25 @@ sudokuElements = collections.defaultdict(list)
 dataString = ""
 
 # definitions:
+""" A function to clear the puzzle """
+def New():
+    try:
+        for r in range (9):
+            for c in range (9):
+                sudokuElements[r][c].delete(0)
+    except:
+        # happens if the user tries to click New even tho the
+        # game is alreay new
+        pass
+    return
+
+#TODO decide whether the following function is useful:
+""" Open a written game """
 def Open():
     # define code here
     pass
 
-# fx to call the executable's subprocess:
+""" Calls the executable's subprocess passing the puzzle data """
 def SpawnSolver():
     global dataString
     if (sys.platform == "linux") or (sys.platform == "linux2"):
@@ -41,7 +55,7 @@ def SpawnSolver():
 
     return procOut.returncode
 
-# sets the puzzle grid with the correct results
+""" Shows the solved puzzle on the grid """
 def PrintResult():
     global dataString
     global sudokuElements
@@ -53,7 +67,7 @@ def PrintResult():
 
     return
 
-# called whenever the "Solve" button is clicked:
+""" Callback of the "Solve" button """
 def SolvePuzzle():
     global dataString
     global sudokuElements
@@ -123,8 +137,9 @@ root.config(menu = mainMenu)
 fileMenu = tk.Menu(mainMenu, tearoff=0)
 mainMenu.add_cascade(label="File", menu=fileMenu)
 # add commands to file menu:
+fileMenu.add_command(label="New", command=New)
 fileMenu.add_command(label="Open", command=Open)
-#file_menu.add_separator()
+fileMenu.add_separator()
 fileMenu.add_command(label="Quit", command=root.destroy)
 
 topFrame = tk.Frame(root)
